@@ -27,13 +27,13 @@ while True:
         ch = sys.stdin.readline()
         if ch[0] == '1':
             print('Starting wiper')
-            relay(1)
-            utime.sleep(3)
-            relay(0)
-        elif ch[0] == '4':
             relay_2(1)
-        elif ch[0] == '5':
+            utime.sleep(3)
             relay_2(0)
+        elif ch[0] == '4':
+            relay(1)
+        elif ch[0] == '5':
+            relay(0)
         elif ch[0] == '2':
             ledToggle = False
         elif ch[0] == '3':
