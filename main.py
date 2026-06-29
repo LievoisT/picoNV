@@ -64,22 +64,8 @@ ledToggle = True
 timer = Timer()
 timer.init(period=1000, mode=Timer.PERIODIC, callback=tick)
 
-# 1. Wiper Setup (Motor A)
-# Turn on power to Motor A and leave it running at 100% speed.
-board.MotorRun(0, True, 100) 
-
-# The actual wiper movement is gated by GP2
-wiper_trigger = Pin(2, Pin.OUT)
-wiper_trigger.value(0)
-
-# 2. Lambertian Target Setup (Motor B)
-# Active-Low Hall sensors (use internal PULL_UP resistors)
-hall_in = Pin(19, Pin.IN, Pin.PULL_UP)
-hall_out = Pin(20, Pin.IN, Pin.PULL_UP)
-
-print("System Ready.")
-print("Commands: 1=Wiper, 2=LED Off, 3=LED On, 4=Target In, 5=Target Out")
-
+relay = Pin(6, Pin.OUT)  # set pin as output
+relay_2 = Pin(7, Pin.OUT)
 while True:
     if select.select([sys.stdin], [], [], 0)[0]:
         ch = sys.stdin.readline().strip() 
@@ -88,11 +74,14 @@ while True:
             continue
             
         if ch[0] == '1':
-            print('Starting wiper (GP2)')
-            wiper_trigger.value(1)
+            print('Starting wiper')
+            relay_2(1)
             utime.sleep(3)
-            wiper_trigger.value(0)
-            
+            relay_2(0)
+        elif ch[0] == '4':
+            relay(1)
+        elif ch[0] == '5':
+            relay(0)
         elif ch[0] == '2':
             ledToggle = False
             
